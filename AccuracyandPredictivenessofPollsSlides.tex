@@ -140,6 +140,7 @@ One key question is how accurate polls are far out from election day. 200 days w
 
 \begin{frame}{Average Error By State}
 Below is a Choropleth of the Average Polling Error in the last 60 days until the election.
+%code is in plotlycode.R
 \begin{figure}[h]
        \centering
         \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError08-16".png}
@@ -160,8 +161,8 @@ Below is a plot of the Average Margin Error of polls from the last 60 days for a
 
 \end{frame}
 
-\begin{frame}{Accuracy in Competitive and Non-Competitive States}
-Below is a plot showing the average Margin error in competitive and noncompetitive states, broken up by week for the last 12 weeks of the election. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\begin{frame}{Margin Error in Competitive and Non-Competitive States}
+Below is a plot showing the average Margin error in competitive and noncompetitive states, broken up by week for the last 12 weeks of the election. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
@@ -169,26 +170,34 @@ Below is a plot showing the average Margin error in competitive and noncompetiti
 \end{knitrout}
 
 \end{frame}
-
-\begin{frame}{Predictiveness Attempt 1}
-\begin{itemize}
-\item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
-\end{itemize}
+\begin{frame}{Percent of Races Called Correctly}
+Below is a plot of the percent of races called correctly. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
-
 \end{frame}
 
-\begin{frame}{Predictiveness Attempt 2}[fragile]
+\begin{frame}{Predictiveness Attempt 1}
 \begin{itemize}
-\item A mixed model including random effects for Year, State, and Year interacted with state is now fit.  We plot the psuedo $R^2$ for the mixed model. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \end{itemize}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}{Predictiveness Attempt 2}
+\begin{itemize}
+\item A mixed model including random effects for Year, State, and Year interacted with state is now fit.  We plot the psuedo $R^2$ for the mixed model. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
+\end{itemize}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
 
 \end{knitrout}
 
@@ -201,7 +210,7 @@ Below is a plot showing the average Margin error in competitive and noncompetiti
 \end{itemize}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
 \end{knitrout}
 \end{frame}
@@ -211,7 +220,7 @@ Below is a plot showing the average Margin error in competitive and noncompetiti
 \end{itemize}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 
 \end{knitrout}
 \end{frame}
@@ -219,7 +228,7 @@ Below is a plot showing the average Margin error in competitive and noncompetiti
 
 
 \begin{frame}{Polling Errors in FL, MI, NC, PA, WI Part Two}
-Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI are not unsual compared to other states. 
+Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI are not unsual compared to other states. %code is in plotlycode.R
 \begin{figure}[h]
        \centering
         \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError2016".png}

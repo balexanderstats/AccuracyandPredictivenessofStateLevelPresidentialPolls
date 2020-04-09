@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7380 64-bit) (preloaded format=pdflatex 2020.4.8)  9 APR 2020 09:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7380 64-bit) (preloaded format=pdflatex 2020.4.8)  9 APR 2020 11:49
 entering extended mode
 **./AccuracyandPredictivenessofPollsSlides.tex
 (AccuracyandPredictivenessofPollsSlides.tex
@@ -1010,7 +1010,7 @@ Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf  used on input line 139.
 File: AverageMarginPollingError08-16.png Graphic file (type png)
 <use AverageMarginPollingError08-16.png>
 Package pdftex.def Info: AverageMarginPollingError08-16.png  used on input line
- 147.
+ 148.
 (pdftex.def)             Requested size: 230.46739pt x 142.97586pt.
  [11
 
@@ -1018,10 +1018,10 @@ Package pdftex.def Info: AverageMarginPollingError08-16.png  used on input line
 <figure/unnamed-chunk-3-1.pdf, id=347, 289.08pt x 144.54pt>
 File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf  used on input line 161.
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf  used on input line 162.
 (pdftex.def)             Requested size: 289.07928pt x 144.54623pt.
 
-Overfull \vbox (5.13823pt too high) detected at line 161
+Overfull \vbox (5.13823pt too high) detected at line 162
  []
 
 [12
@@ -1030,7 +1030,7 @@ Overfull \vbox (5.13823pt too high) detected at line 161
 <figure/unnamed-chunk-4-1.pdf, id=378, 289.08pt x 180.675pt>
 File: figure/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf  used on input line 171.
+Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf  used on input line 172.
 (pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
  [13
 
@@ -1038,59 +1038,68 @@ Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf  used on input line 171.
 <figure/unnamed-chunk-5-1.pdf, id=410, 289.08pt x 180.675pt>
 File: figure/unnamed-chunk-5-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf  used on input line 183.
+Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf  used on input line 180.
 (pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
-
-Overfull \vbox (0.4748pt too high) detected at line 183
- []
 
 [14
 
  <./figure/unnamed-chunk-5-1.pdf>]
-<figure/unnamed-chunk-6-1.pdf, id=440, 289.08pt x 180.675pt>
+<figure/unnamed-chunk-6-1.pdf, id=441, 289.08pt x 180.675pt>
 File: figure/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf  used on input line 195.
+Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf  used on input line 192.
 (pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
 
-Overfull \vbox (14.0748pt too high) detected at line 195
+Overfull \vbox (0.4748pt too high) detected at line 192
  []
 
 [15
 
  <./figure/unnamed-chunk-6-1.pdf>]
-<figure/unnamed-chunk-7-1.pdf, id=470, 289.08pt x 180.675pt>
+<figure/unnamed-chunk-7-1.pdf, id=471, 289.08pt x 180.675pt>
 File: figure/unnamed-chunk-7-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-7-1.pdf  used on input line 207.
+Package pdftex.def Info: figure/unnamed-chunk-7-1.pdf  used on input line 204.
 (pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
- [16
+
+Overfull \vbox (0.4748pt too high) detected at line 204
+ []
+
+[16
 
  <./figure/unnamed-chunk-7-1.pdf>]
-<figure/unnamed-chunk-8-1.pdf, id=502, 289.08pt x 180.675pt>
+<figure/unnamed-chunk-8-1.pdf, id=501, 289.08pt x 180.675pt>
 File: figure/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-8-1.pdf  used on input line 217.
+Package pdftex.def Info: figure/unnamed-chunk-8-1.pdf  used on input line 216.
 (pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
-
-[17
+ [17
 
  <./figure/unnamed-chunk-8-1.pdf>]
-<AverageMarginPollingError2016.png, id=532, 520.344pt x 322.806pt>
+<figure/unnamed-chunk-9-1.pdf, id=533, 289.08pt x 180.675pt>
+File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-9-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf  used on input line 226.
+(pdftex.def)             Requested size: 289.07928pt x 180.68282pt.
+
+[18
+
+ <./figure/unnamed-chunk-9-1.pdf>]
+<AverageMarginPollingError2016.png, id=563, 520.344pt x 322.806pt>
 File: AverageMarginPollingError2016.png Graphic file (type png)
 <use AverageMarginPollingError2016.png>
 Package pdftex.def Info: AverageMarginPollingError2016.png  used on input line 
-227.
+236.
 (pdftex.def)             Requested size: 230.46739pt x 142.97586pt.
- [18
+ [19
 
- <./AverageMarginPollingError2016.png>] [19
+ <./AverageMarginPollingError2016.png>] [20
 
 ]
 ! Undefined control sequence.
 \beamer@doifinframe ...dential Elections," \texit 
                                                   {SIAM Undergraduate Resear...
-l.242 \end{frame}
+l.251 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1101,7 +1110,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ions, 2004–2016," \texit 
                                                   {Journal of the Royal Stat...
-l.242 \end{frame}
+l.251 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1112,7 +1121,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...in election polls," \texti 
                                                   {Journal of the American S...
-l.242 \end{frame}
+l.251 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1120,7 +1129,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[20
+[21
 
 ]
 \tf@nav=\write6
@@ -1132,20 +1141,20 @@ and I'll forget about whatever was undefined.
 \tf@snm=\write8
 \openout8 = `AccuracyandPredictivenessofPollsSlides.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 244.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 244.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 253.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 253.
  (AccuracyandPredictivenessofPollsSlides.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 244.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 244.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 253.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 253.
 Package rerunfilecheck Info: File `AccuracyandPredictivenessofPollsSlides.out' 
 has not changed.
 (rerunfilecheck)             Checksum: 8A89928DDFEFBD1AD13B72166DAE03F7;378.
  ) 
 Here is how much of TeX's memory you used:
- 18047 strings out of 480930
- 352474 string characters out of 2899762
+ 18058 strings out of 480930
+ 352737 string characters out of 2899762
  590641 words of memory out of 3000000
- 33414 multiletter control sequences out of 15000+200000
+ 33422 multiletter control sequences out of 15000+200000
  539738 words of font info for 50 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  58i,14n,67p,872b,561s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1159,10 +1168,10 @@ ritt/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi10.p
 fb><C:/Users/britt/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmssi8.pfb><C:/Users/britt/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/p
 ublic/amsfonts/symbols/msam10.pfb>
-Output written on AccuracyandPredictivenessofPollsSlides.pdf (20 pages, 546349 
+Output written on AccuracyandPredictivenessofPollsSlides.pdf (21 pages, 556281 
 bytes).
 PDF statistics:
- 649 PDF objects out of 1000 (max. 8388607)
- 47 named destinations out of 1000 (max. 500000)
- 141 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 681 PDF objects out of 1000 (max. 8388607)
+ 49 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 

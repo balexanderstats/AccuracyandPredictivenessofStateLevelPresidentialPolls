@@ -93,6 +93,7 @@ ggplot(statelevel, aes(x = MidDaysUntil,y =  MarginError, color = competitive)) 
 
 \begin{frame}{Average Error By State}
 Below is a Choropleth of the Average Polling Error in the last 60 days until the election.
+%code is in plotlycode.R
 \begin{figure}[h]
        \centering
         \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError08-16".png}
@@ -155,8 +156,8 @@ ggplot(dfavgaccuracy, aes(ActualMargin,MarginError)) + geom_point(aes(color = Ye
 
 \end{frame}
 
-\begin{frame}{Accuracy in Competitive and Non-Competitive States}
-Below is a plot showing the average Margin error in competitive and noncompetitive states, broken up by week for the last 12 weeks of the election. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\begin{frame}{Margin Error in Competitive and Non-Competitive States}
+Below is a plot showing the average Margin error in competitive and noncompetitive states, broken up by week for the last 12 weeks of the election. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 <<>>=
 #overall percent accuracy
 competitivepolls = statelevel[statelevel$competitive == "competitive",]
@@ -191,15 +192,22 @@ averageerrorvotebytimenoncomp = round(averageerrorvotebytimenoncomp, 3)
 tablecalled = rbind(levels(statelevel$MidDaysFactor), percentcalledcompbytime, percentcallednoncompbytime, averageerrorMarginbytimecomp, averageerrorMarginbytimenoncomp,averageerrorvotebytimecomp, averageerrorvotebytimenoncomp )
 rownames(tablecalled) = c("Time until Election", "Percentage of Competitve States Called Correctly","Percentage of Non-Competitve States Called Correctly", "Average Margin Error by Time in Competitive States", "Average Margin Error by Time in Non-Competitive States", "Average Vote Error by Time in Competitive States", "Average Vote Error by Time in Non=Competitive States")
 dfavgaccuracybytime = data.frame("time"= levels(statelevel$MidDaysFactor), "comperror" = averageerrorvotebytimecomp, "noncomperror" = averageerrorvotebytimenoncomp, "percentcallcomp" = percentcalledcompbytime, "percentcallnoncomp" = percentcallednoncompbytime,"ErrorMOERatiocomp" = averageMOEErrorRatiocompbytime, "ErrorMOERationoncomp" = averageMOEErrorRationoncompbytime,  "weeksleft" = c(rep(NA, 3), 12:1))
-ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERatiocomp, ErrorMOERationoncomp))+geom_point(aes(weeksleft, comperror), shape = 0, color = "Purple")+geom_point(aes(weeksleft, noncomperror), shape = 5, color = "Green") + scale_y_continuous(limits = c(0, 6))+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERatiocomp, ErrorMOERationoncomp))+geom_point(aes(weeksleft, comperror), shape = 0, color = "Purple")+geom_point(aes(weeksleft, noncomperror), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 6))+ scale_x_continuous(breaks = seq(0, 12, 1))
 
 @
 
 \end{frame}
+\begin{frame}{Percent of Races Called Correctly}
+Below is a plot of the percent of races called correctly. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
+<<>>=
+ggplot(dfavgaccuracybytime, aes(weeksleft, percentcallcomp, percentcallnoncomp))+geom_point(aes(weeksleft, percentcallcomp), shape = 0, color = "Purple")+geom_point(aes(weeksleft, percentcallnoncomp), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 1))+ scale_x_continuous(breaks = seq(0, 12, 1))
+
+@
+\end{frame}
 
 \begin{frame}{Predictiveness Attempt 1}
 \begin{itemize}
-\item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \end{itemize}
 <<>>=
 levels(statelevel$MidDaysFactor) = c("Pre-Primary", "Primary", "Summer", paste(12:2, "Weeks Before"), "Last week")
@@ -215,14 +223,14 @@ for(i in 1:15){
     rsquaretimenoncomp[i] = summary(lm(ActualMargin~PollMargin, data = statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "noncompetitive",]))$r.squared
   }
 dfpredict1 = data.frame("time"= levels(statelevel$MidDaysFactor), "r2comp" = rsquaretimecomp, "r2noncomp" = rsquaretimenoncomp, "weeksleft" = c(rep(NA, 3), 12:1))
-ggplot(dfpredict1, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape = 0 ) + geom_point(aes(weeksleft, r2noncomp), color = "Green", shape = 5)+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfpredict1, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape = 0 ) + geom_point(aes(weeksleft, r2noncomp), color = "Black", shape = 5)+ scale_x_continuous(breaks = seq(0, 12, 1))
 @
 
 \end{frame}
 
 \begin{frame}{Predictiveness Attempt 2}
 \begin{itemize}
-\item A mixed model including random effects for Year, State, and Year interacted with state is now fit.  We plot the psuedo $R^2$ for the mixed model. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\item A mixed model including random effects for Year, State, and Year interacted with state is now fit.  We plot the psuedo $R^2$ for the mixed model. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \end{itemize}
 <<>>=
 require("lme4")
@@ -248,7 +256,7 @@ for(i in 1:15){
   }
 #dfpredict2
 dfpredict2 = data.frame("time"= levels(statelevel$MidDaysFactor), "r2comp" = rsquaretimemixedcomp[2,], "r2noncomp" = rsquaretimemixednoncomp[2,], "weeksleft" = c(rep(NA, 3), 12:1))
-ggplot(dfpredict2, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape  =0  ) + geom_point(aes(weeksleft, r2noncomp), color = "Green", shape =5 )+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfpredict2, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape  =0  ) + geom_point(aes(weeksleft, r2noncomp), color = "Black", shape =5 )+ scale_x_continuous(breaks = seq(0, 12, 1))
 @
 
 \end{frame}
@@ -274,7 +282,7 @@ ggplot(statelevel[statelevel$State %in% c("WI", "MI", "FL", "NC", "PA") & statel
 
 
 \begin{frame}{Polling Errors in FL, MI, NC, PA, WI Part Two}
-Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI are not unsual compared to other states. 
+Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI are not unsual compared to other states. %code is in plotlycode.R
 \begin{figure}[h]
        \centering
         \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError2016".png}

@@ -2,5 +2,5 @@
 \beamer@sectionintoc {2}{Previous Work}{6}{0}{2}
 \beamer@sectionintoc {3}{Definition of Accuracy and Predictiveness}{8}{0}{3}
 \beamer@sectionintoc {4}{The State of State Level Polls}{10}{0}{4}
-\beamer@sectionintoc {5}{2016 Mythbusting}{16}{0}{5}
-\beamer@sectionintoc {6}{Looking Forward to 2020}{19}{0}{6}
+\beamer@sectionintoc {5}{2016 Mythbusting}{17}{0}{5}
+\beamer@sectionintoc {6}{Looking Forward to 2020}{20}{0}{6}
