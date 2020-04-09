@@ -1,0 +1,299 @@
+\documentclass{beamer}
+\title{The Accuracy and Predictiveness of State-Level Presidential Polls}
+\author{Brittany Alexander}
+\usepackage{hyperref}
+\usecolortheme{beaver}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\frametitle{Outline}
+  \tableofcontents
+\end{frame}
+
+<<echo = FALSE, warning = FALSE, message=FALSE>>=
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 4, fig.height = 2.5, message=FALSE)
+require("ggplot2")
+statelevel = read.csv("PollingDataSetStateLevelOnly4-6-20.csv")
+
+
+@
+
+
+
+\section{Introduction to Presidential Election Polling}
+\begin{frame}{Introduction to Presidential Election Polling}
+\begin{itemize}
+\item Presidential Election polls aim to predict both the winner and the proportion of votes for candidates nationwide and in individual states
+\item Predicting the winners of states is important because a candidate must win the most electors which is largely determined who wins a state
+\item The number of electors per states is the number of respresentives in Congress plus two.
+\item We define a state as competitive if it's margin on election day is between -5 and 5 points. Competitive states are of more interest.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Challenges of Using Polls to Predict Elections}
+\begin{itemize}
+\item Election polls are taken before the election and voters change their minds
+\item Polls typically include undecided voters
+\item It is common for polls to ignore minor candidates
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Data Source}
+\href{https://elections.huffingtonpost.com/pollster}{Huffington Post Pollster} has polling data for 2012-2016.  There was a site to get 2008 data before Pollster merged with Huffington Post, but that link is broken. There are 5756 state level polls across the three elections. Most states have multiple polls for each election year. This data set also contains new variables to model polling across years. New variables includes:
+\begin{itemize}
+\item The election results as both the margin and the two party vote
+\item Days until the election at the start, end, and middle of a poll
+\item Various versions of polling error
+\end{itemize}
+
+\end{frame}
+
+
+\section{Previous Work}
+\begin{frame}{Inspiration}
+\href{https://twitter.com/aedwardslevy/status/1138832357224525829}{Twitter Thread}
+\begin{figure}[h]
+       \centering
+        \includegraphics[height = 0.75\textheight]{"twitterinspiration".png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Literature Review}
+\begin{itemize}
+\item Hillygus, D. S. (2011) describes a history of election polling but doesn't include much on state level polls
+\item Bon et.al 2019 focused on the effects of undecided voters and polling bias
+\item Shirani-Mehr (2018) built a model to decompose bias and variance in polls but focused on the last two weeks of the election
+\item Alexander (2019) built a model and looks at the accuracy of averaging the polls
+\item None of these studies focuses on individual polls during a broad range of time
+\end{itemize}
+\end{frame}
+
+\section{Definition of Accuracy and Predictiveness}
+\begin{frame}{Accuracy}
+Accuracy in polling has two components: percent called correctly, and distance between a polls results and what happens on election day.  Additionally accuracy can be viewed in terms of margin, and in terms of vote. Margin is defined as the difference between the Democratic vote (or poll support) and the Republician vote (or poll support). Accuracy in terms of vote is measured by first applying the formula: $d_{new} = \frac{d}{d+r}, r_{new} = \frac{r}{d+r}$ to polls and vote results so that the Republican and Democratic support sums to 1. This standardizes results to deal with different levels of undecideds, and the inclusion of minor candidates.
+\end{frame}
+
+\begin{frame}{Predictiveness}
+Predictiveness is defined by the strength of a correlation between two variables and $R^2$ of fit regressions. Predictiveness is matters because it tells us if and when we can consider polls to have predictive value in the election.  
+\end{frame}
+
+\section{The State of State Level Polls}
+\begin{frame}{Accuracy Over Time}
+One key question is how accurate polls are far out from election day. 200 days would be approximately in late January (start of the primary), and 100 days before is the end of August. This uses lowess smoothing. 
+
+<<fig.width=5.5>>=
+ggplot(statelevel, aes(x = MidDaysUntil,y =  MarginError, color = competitive)) + geom_smooth(method = "loess") + scale_x_continuous(breaks = seq(0, 700, 50), minor_breaks = seq(0 , 700, 25))
+@
+\end{frame}
+
+\begin{frame}{Average Error By State}
+Below is a Choropleth of the Average Polling Error in the last 60 days until the election.
+\begin{figure}[h]
+       \centering
+        \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError08-16".png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Accuracy By Partisanship}
+Below is a plot of the Average Margin Error of polls from the last 60 days for a state by it's actual margin on election day. 
+\begin{itemize}
+\item Recall that proportions are most variable when they are closest to .5 suggesting that competitive states should have more sampling error.
+\item Possible explaination: Nonsampling factors such as poll quality, frequency polled, etc.  explain this phenomon.
+\end{itemize}
+<<fig.height=2>>=
+polls2008 = statelevel[statelevel$Year == "2008" & statelevel$MidDaysUntil < 60, ]
+polls2012 = statelevel[statelevel$Year == "2012"& statelevel$MidDaysUntil < 60, ]
+polls2016 = statelevel[statelevel$Year == "2016"& statelevel$MidDaysUntil < 60, ]
+avgVoteErrorbystate2008 = rep(NA, 50)
+avgVoteErrorbystate2012 = rep(NA, 50)
+avgVoteErrorbystate2016 = rep(NA, 50)
+avgMarginErrorbystate2008 = rep(NA, 50)
+avgMarginErrorbystate2012 = rep(NA, 50)
+avgMarginErrorbystate2016 = rep(NA, 50)
+statemargins2008 = rep(NA, 50)
+statedemvote2008 = rep(NA, 50)
+statemargins2012 = rep(NA, 50)
+statedemvote2012 = rep(NA, 50)
+statemargins2016 = rep(NA, 50)
+statedemvote2016 = rep(NA, 50)
+statenames = unique(statelevel$State)[1:50]
+for(i in 1:50){
+  pollstemp = polls2008[polls2008$State == statenames[i], ]
+  avgVoteErrorbystate2008[i] = mean(pollstemp$VoteErrorAbs)
+  avgMarginErrorbystate2008[i] = mean(pollstemp$MarginErrorAbs)
+  statedemvote2008[i] = pollstemp$DemVote[1]
+  statemargins2008[i] = pollstemp$ActualMargin[1]
+  
+}
+
+for(i in 1:50){
+  pollstemp = polls2012[polls2012$State == statenames[i], ]
+  avgVoteErrorbystate2012[i] = mean(pollstemp$VoteErrorAbs)
+  avgMarginErrorbystate2012[i] = mean(pollstemp$MarginErrorAbs)
+  statedemvote2012[i] = pollstemp$DemVote[1]
+  statemargins2012[i] = pollstemp$ActualMargin[1]
+}
+
+for(i in 1:50){
+  pollstemp = polls2016[polls2016$State == statenames[i], ]
+  avgVoteErrorbystate2016[i] = mean(pollstemp$VoteErrorAbs)
+  avgMarginErrorbystate2016[i] = mean(pollstemp$MarginErrorAbs)
+  statedemvote2016[i] = pollstemp$DemVote[1]
+  statemargins2016[i] = pollstemp$ActualMargin[1]
+}
+allMarginbystate = colMeans(rbind(avgMarginErrorbystate2008, avgMarginErrorbystate2012, avgMarginErrorbystate2016), na.rm = T)
+
+dfavgaccuracy = data.frame("State" = rep(statenames, 3), "MarginError" = c(avgMarginErrorbystate2008, avgMarginErrorbystate2012, avgMarginErrorbystate2016), "VoteError" = c(avgVoteErrorbystate2008, avgVoteErrorbystate2012, avgVoteErrorbystate2016), "ActualMargin" = c(statemargins2008, statemargins2012, statemargins2012), "ActualDemVote" = c(statedemvote2008, statedemvote2012, statemargins2016), "Year" = c(rep("2008", 50), rep( "2012", 50), rep("2016", 50)))
+#plot(dfavgaccuracy$MarginError~dfavgaccuracy$ActualMargin)
+ggplot(dfavgaccuracy, aes(ActualMargin,MarginError)) + geom_point(aes(color = Year))
+@
+
+\end{frame}
+
+\begin{frame}{Accuracy in Competitive and Non-Competitive States}
+Below is a plot showing the average Margin error in competitive and noncompetitive states, broken up by week for the last 12 weeks of the election. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+<<>>=
+#overall percent accuracy
+competitivepolls = statelevel[statelevel$competitive == "competitive",]
+noncompetitivepolls = statelevel[statelevel$competitive != "competitive",]
+percentcalledcomp = sum(sign(competitivepolls$PollMargin) == sign(competitivepolls$ActualMargin))/nrow(competitivepolls)
+percentcallednoncomp = sum(sign(noncompetitivepolls$PollMargin) == sign(noncompetitivepolls$ActualMargin))/nrow(noncompetitivepolls)
+#now broken down 
+percentcalledcompbytime = rep(NA, 15)
+percentcallednoncompbytime = rep(NA, 15)
+averageerrorvotebytimecomp = rep(NA, 15)
+averageerrorMarginbytimecomp = rep(NA, 15)
+averageerrorvotebytimenoncomp = rep(NA, 15)
+averageerrorMarginbytimenoncomp = rep(NA, 15)
+averageMOEErrorRatiocompbytime = rep(NA, 15)
+averageMOEErrorRationoncompbytime = rep(NA, 15)
+for(i in 1:15){
+  percentcalledcompbytime[i] = sum(sign(competitivepolls[competitivepolls$MidDaysFactor == levels(competitivepolls$MidDaysFactor)[i],]$PollMargin) == sign(competitivepolls[competitivepolls$MidDaysFactor == levels(competitivepolls$MidDaysFactor)[i],]$ActualMargin))/nrow(competitivepolls[competitivepolls$MidDaysFactor == levels(competitivepolls$MidDaysFactor)[i],])
+  percentcallednoncompbytime[i] = sum(sign(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$PollMargin) == sign(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$ActualMargin))/nrow(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],])
+  averageerrorvotebytimecomp[i] = mean(competitivepolls[competitivepolls$MidDaysFactor == levels(competitivepolls$MidDaysFactor)[i],]$VoteErrorAbs)
+  averageerrorMarginbytimecomp[i] = mean(competitivepolls[competitivepolls$MidDaysFactor == levels(competitivepolls$MidDaysFactor)[i],]$MarginErrorAbs)
+  averageerrorvotebytimenoncomp[i] = mean(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$VoteErrorAbs)
+  averageerrorMarginbytimenoncomp[i] = mean(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$MarginErrorAbs)
+  averageMOEErrorRatiocompbytime[i] = mean(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$ErrorMOERatio, na.rm=T)
+  averageMOEErrorRationoncompbytime = mean(noncompetitivepolls[noncompetitivepolls$MidDaysFactor == levels(noncompetitivepolls$MidDaysFactor)[i],]$ErrorMOERatio, na.rm=T)
+}
+percentcalledcompbytime = round(percentcalledcompbytime, 3)
+percentcallednoncompbytime = round(percentcallednoncompbytime, 3)
+averageerrorMarginbytimecomp = round(averageerrorMarginbytimecomp, 3)
+averageerrorMarginbytimenoncomp = round(averageerrorMarginbytimenoncomp, 3)
+averageerrorvotebytimecomp = round(averageerrorvotebytimecomp, 3)
+averageerrorvotebytimenoncomp = round(averageerrorvotebytimenoncomp, 3)
+tablecalled = rbind(levels(statelevel$MidDaysFactor), percentcalledcompbytime, percentcallednoncompbytime, averageerrorMarginbytimecomp, averageerrorMarginbytimenoncomp,averageerrorvotebytimecomp, averageerrorvotebytimenoncomp )
+rownames(tablecalled) = c("Time until Election", "Percentage of Competitve States Called Correctly","Percentage of Non-Competitve States Called Correctly", "Average Margin Error by Time in Competitive States", "Average Margin Error by Time in Non-Competitive States", "Average Vote Error by Time in Competitive States", "Average Vote Error by Time in Non=Competitive States")
+dfavgaccuracybytime = data.frame("time"= levels(statelevel$MidDaysFactor), "comperror" = averageerrorvotebytimecomp, "noncomperror" = averageerrorvotebytimenoncomp, "percentcallcomp" = percentcalledcompbytime, "percentcallnoncomp" = percentcallednoncompbytime,"ErrorMOERatiocomp" = averageMOEErrorRatiocompbytime, "ErrorMOERationoncomp" = averageMOEErrorRationoncompbytime,  "weeksleft" = c(rep(NA, 3), 12:1))
+ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERatiocomp, ErrorMOERationoncomp))+geom_point(aes(weeksleft, comperror), shape = 0, color = "Purple")+geom_point(aes(weeksleft, noncomperror), shape = 5, color = "Green") + scale_y_continuous(limits = c(0, 6))+ scale_x_continuous(breaks = seq(0, 12, 1))
+
+@
+
+\end{frame}
+
+\begin{frame}{Predictiveness Attempt 1}
+\begin{itemize}
+\item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\end{itemize}
+<<>>=
+levels(statelevel$MidDaysFactor) = c("Pre-Primary", "Primary", "Summer", paste(12:2, "Weeks Before"), "Last week")
+rsquaretimebyyear = matrix(NA, ncol = 15, nrow =3)
+
+rsquaretime = colMeans(rsquaretimebyyear)
+rsquaretimecomp = rep(NA, 15)
+for(i in 1:15){
+    rsquaretimecomp[i] = summary(lm(ActualMargin~PollMargin, data = statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "competitive",]))$r.squared
+}
+rsquaretimenoncomp = rep(NA, 15)
+for(i in 1:15){
+    rsquaretimenoncomp[i] = summary(lm(ActualMargin~PollMargin, data = statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "noncompetitive",]))$r.squared
+  }
+dfpredict1 = data.frame("time"= levels(statelevel$MidDaysFactor), "r2comp" = rsquaretimecomp, "r2noncomp" = rsquaretimenoncomp, "weeksleft" = c(rep(NA, 3), 12:1))
+ggplot(dfpredict1, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape = 0 ) + geom_point(aes(weeksleft, r2noncomp), color = "Green", shape = 5)+ scale_x_continuous(breaks = seq(0, 12, 1))
+@
+
+\end{frame}
+
+\begin{frame}{Predictiveness Attempt 2}
+\begin{itemize}
+\item A mixed model including random effects for Year, State, and Year interacted with state is now fit.  We plot the psuedo $R^2$ for the mixed model. Purple Square is competitive states, and Green Rhomus is noncompetitive states.
+\end{itemize}
+<<>>=
+require("lme4")
+require("MuMIn")
+#summary(lmer(DemVote~Dem2P + (1|State)+ (1|Year)+(Year|State) + competitive, data=statelevel))
+#r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year)+(Year|State), data=statelevel))
+time = matrix(NA, ncol = 15, nrow =3)
+yeartemp = c(2008, 2012, 2016)
+rsquaretimemixed = matrix(NA, nrow = 2, ncol = 15)
+for(i in 1:15){
+    rsquaretimemixed[1,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i], ]))[,1]
+    rsquaretimemixed[2,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i], ]))[,2]
+}
+rsquaretimemixedcomp = matrix(NA, nrow = 2, ncol = 15)
+for(i in 1:15){
+    rsquaretimemixedcomp[1,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i]&  statelevel$competitive == "competitive", ]))[,1]
+    rsquaretimemixedcomp[2,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i]&  statelevel$competitive == "competitive", ]))[,2]
+  }
+rsquaretimemixednoncomp = matrix(NA, nrow = 2, ncol = 15)
+for(i in 1:15){
+    rsquaretimemixednoncomp[1,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "noncompetitive", ]))[,1]
+    rsquaretimemixednoncomp[2,i] = r.squaredGLMM(lmer(DemVote~Dem2P + (1|State)+ (1|Year), data=statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "noncompetitive", ]))[,2]
+  }
+#dfpredict2
+dfpredict2 = data.frame("time"= levels(statelevel$MidDaysFactor), "r2comp" = rsquaretimemixedcomp[2,], "r2noncomp" = rsquaretimemixednoncomp[2,], "weeksleft" = c(rep(NA, 3), 12:1))
+ggplot(dfpredict2, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape  =0  ) + geom_point(aes(weeksleft, r2noncomp), color = "Green", shape =5 )+ scale_x_continuous(breaks = seq(0, 12, 1))
+@
+
+\end{frame}
+
+\section{2016 Mythbusting}
+\begin{frame}{2016 Errors were Not Abnormally Large}
+\begin{itemize}
+\item Polling Errors in 2008 were highly similar in absolute value to 2008. 2008 and 2012 broadly underestimated Democratic support, but in 2016 Republican support was underestimated.
+\end{itemize}
+<<>>=
+ggplot(statelevel, aes(as.factor(Year), MarginErrorAbs)) + geom_boxplot() + facet_grid(~competitive)
+@
+\end{frame}
+\begin{frame}{Polling Errors in FL, MI, NC, PA, WI}
+\begin{itemize}
+\item Polling errors were not abnormally larger in 2016 in FL, MI, NC, PA, WI in terms of error, but the races were not called correctly.  
+\end{itemize}
+<<>>=
+ggplot(statelevel[statelevel$State %in% c("WI", "MI", "FL", "NC", "PA") & statelevel$MidDaysUntil < 60,],  aes(State, VoteErrorAbs)) + geom_boxplot() + facet_grid(~Year)
+@
+\end{frame}
+
+
+
+\begin{frame}{Polling Errors in FL, MI, NC, PA, WI Part Two}
+Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI are not unsual compared to other states. 
+\begin{figure}[h]
+       \centering
+        \includegraphics[width = 0.75\textwidth]{"AverageMarginPollingError2016".png}
+    \end{figure}
+\end{frame}
+
+
+\section{Looking Forward to 2020}
+\begin{frame}{Conclusion}
+Polls have small predictive value throughout the election process due to inconsistent patterns across states and years. Polling Accuracy is relatively stable starting three weeks out.  A more controlled in depth analysis and model is needed to adjust for the differences in states, polling quality, and polling volume. However, it is clear that while polling error was larger in 2016 than 2012, it is similar to 2008.  The focus on FL, MI, NC, PA, WI being wrong ignores that the direction of sampling error is random and can not be controlled. Overall polls were reliable in those states compared to previous years.
+\end{frame}
+
+\begin{frame}{References}
+\begin{itemize}
+\item Alexander, Brittany (2019), "A Bayesian Model for the Prediction of United States Presidential Elections," \texit{SIAM Undergraduate Research Online}, \textbf{12}. 
+\item Bon, J. J., Ballard, T., \& Baffour, B. (2019), "Polling bias and undecided voter allocations: US presidential elections, 2004–2016," \texit{Journal of the Royal Statistical Society: Series A (Statistics in Society)}, \textbf{182(2)}, 467-493.
+\item Hillygus, D. S. (2011). "The evolution of election polling in the United States," \textit{Public opinion quarterly}, \textbf{75(5)}, 962-981
+\item Shirani-Mehr, H., Rothschild, D., Goel, S., \& Gelman, A. (2018), "Disentangling bias and variance in election polls," \texti{Journal of the American Statistical Association}, \textbf{113(522)}, 607-614.
+\end{itemize}
+\end{frame}
+
+\end{document}
