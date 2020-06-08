@@ -113,4 +113,13 @@ fig <- fig %>% layout(
   geo = g
 )
 fig
+#difference between MOE and actual error
+statelevel$diffMOEVE = statelevel$VoteErrorAbs - statelevel$margin_of_error
+ggplot(statelevel, aes(diffMOEVE))  + geom_histogram()
+ggplot(statelevel, aes(diffMOEVE))  + geom_histogram()+facet_grid(~competitive)
+ggplot(statelevel[statelevel$Year != "2008",], aes(diffMOEVE))  + geom_histogram(binwidth = 2.5)+facet_grid(Year~competitive)+ylab("Difference between Margin of Error and actual Vote Error")
+
+
+ggplot(statelevel[statelevel$State %in% c("WI", "MI", "FL", "NC", "PA") & statelevel$MidDaysUntil < 60 & statelevel$Year != "2008",],  aes(State, diffMOEVE)) + geom_boxplot() + facet_grid(~Year)
+
     

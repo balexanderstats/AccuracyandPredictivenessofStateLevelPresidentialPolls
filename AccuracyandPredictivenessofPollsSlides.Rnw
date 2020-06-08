@@ -87,7 +87,7 @@ Predictiveness is defined by the strength of a correlation between two variables
 One key question is how accurate polls are far out from election day. 200 days would be approximately in late January (start of the primary), and 100 days before is the end of August. This uses lowess smoothing. 
 
 <<fig.width=5.5>>=
-ggplot(statelevel, aes(x = MidDaysUntil,y =  MarginError, color = competitive)) + geom_smooth(method = "loess") + scale_x_continuous(breaks = seq(0, 700, 50), minor_breaks = seq(0 , 700, 25))
+ggplot(statelevel, aes(x = MidDaysUntil,y =  MarginErrorAbs, color = competitive)) + geom_smooth(method = "loess") + scale_x_continuous(breaks = seq(0, 700, 50), minor_breaks = seq(0 , 700, 25))
 @
 \end{frame}
 
@@ -192,7 +192,7 @@ averageerrorvotebytimenoncomp = round(averageerrorvotebytimenoncomp, 3)
 tablecalled = rbind(levels(statelevel$MidDaysFactor), percentcalledcompbytime, percentcallednoncompbytime, averageerrorMarginbytimecomp, averageerrorMarginbytimenoncomp,averageerrorvotebytimecomp, averageerrorvotebytimenoncomp )
 rownames(tablecalled) = c("Time until Election", "Percentage of Competitve States Called Correctly","Percentage of Non-Competitve States Called Correctly", "Average Margin Error by Time in Competitive States", "Average Margin Error by Time in Non-Competitive States", "Average Vote Error by Time in Competitive States", "Average Vote Error by Time in Non=Competitive States")
 dfavgaccuracybytime = data.frame("time"= levels(statelevel$MidDaysFactor), "comperror" = averageerrorvotebytimecomp, "noncomperror" = averageerrorvotebytimenoncomp, "percentcallcomp" = percentcalledcompbytime, "percentcallnoncomp" = percentcallednoncompbytime,"ErrorMOERatiocomp" = averageMOEErrorRatiocompbytime, "ErrorMOERationoncomp" = averageMOEErrorRationoncompbytime,  "weeksleft" = c(rep(NA, 3), 12:1))
-ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERatiocomp, ErrorMOERationoncomp))+geom_point(aes(weeksleft, comperror), shape = 0, color = "Purple")+geom_point(aes(weeksleft, noncomperror), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 6))+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERatiocomp, ErrorMOERationoncomp))+geom_point(aes(weeksleft, comperror), shape = 0, color = "Purple")+geom_point(aes(weeksleft, noncomperror), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 6))+ scale_x_continuous(breaks = seq(0, 12, 1), trans = "reverse")+ylab("Average Absolute Margin Error")
 
 @
 
@@ -200,7 +200,8 @@ ggplot(dfavgaccuracybytime, aes(weeksleft, comperror, noncomperror, ErrorMOERati
 \begin{frame}{Percent of Races Called Correctly}
 Below is a plot of the percent of races called correctly. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 <<>>=
-ggplot(dfavgaccuracybytime, aes(weeksleft, percentcallcomp, percentcallnoncomp))+geom_point(aes(weeksleft, percentcallcomp), shape = 0, color = "Purple")+geom_point(aes(weeksleft, percentcallnoncomp), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 1))+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfavgaccuracybytime, aes(weeksleft, percentcallcomp, percentcallnoncomp))+geom_point(aes(weeksleft, percentcallcomp), shape = 0, color = "Purple")+geom_point(aes(weeksleft, percentcallnoncomp), shape = 5, color = "Black") + scale_y_continuous(limits = c(0, 1))+ scale_x_continuous(breaks = seq(0, 12, 1), trans = "reverse")+ylab("Percent of Races Called Correctly")
+
 
 @
 \end{frame}
@@ -223,7 +224,8 @@ for(i in 1:15){
     rsquaretimenoncomp[i] = summary(lm(ActualMargin~PollMargin, data = statelevel[statelevel$MidDaysFactor == levels(statelevel$MidDaysFactor)[i] &  statelevel$competitive == "noncompetitive",]))$r.squared
   }
 dfpredict1 = data.frame("time"= levels(statelevel$MidDaysFactor), "r2comp" = rsquaretimecomp, "r2noncomp" = rsquaretimenoncomp, "weeksleft" = c(rep(NA, 3), 12:1))
-ggplot(dfpredict1, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape = 0 ) + geom_point(aes(weeksleft, r2noncomp), color = "Black", shape = 5)+ scale_x_continuous(breaks = seq(0, 12, 1))
+ggplot(dfpredict1, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft, r2comp),color = "Purple", shape = 0 ) + geom_point(aes(weeksleft, r2noncomp), color = "Black", shape = 5)+ scale_x_continuous(breaks = seq(0, 12, 1), trans = "reverse")+ylab("R-squared over time")
+
 @
 
 \end{frame}
@@ -268,6 +270,7 @@ ggplot(dfpredict2, aes(weeksleft, r2comp, r2noncomp)) + geom_point(aes(weeksleft
 \end{itemize}
 <<>>=
 ggplot(statelevel, aes(as.factor(Year), MarginErrorAbs)) + geom_boxplot() + facet_grid(~competitive)
+ggplot(statelevel, aes(as.factor(Year), MarginError)) + geom_boxplot() + facet_grid(~competitive)
 @
 \end{frame}
 \begin{frame}{Polling Errors in FL, MI, NC, PA, WI}
@@ -295,6 +298,7 @@ Below is a plot of polling errors in 2016, and we see that FL, MI, NC, PA, WI ar
 Polls have small predictive value throughout the election process due to inconsistent patterns across states and years. Polling Accuracy is relatively stable starting three weeks out.  A more controlled in depth analysis and model is needed to adjust for the differences in states, polling quality, and polling volume. However, it is clear that while polling error was larger in 2016 than 2012, it is similar to 2008.  The focus on FL, MI, NC, PA, WI being wrong ignores that the direction of sampling error is random and can not be controlled. Overall polls were reliable in those states compared to previous years.
 \end{frame}
 
+
 \begin{frame}{References}
 \begin{itemize}
 \item Alexander, Brittany (2019), "A Bayesian Model for the Prediction of United States Presidential Elections," \texit{SIAM Undergraduate Research Online}, \textbf{12}. 
@@ -305,3 +309,6 @@ Polls have small predictive value throughout the election process due to inconsi
 \end{frame}
 
 \end{document}
+
+
+
