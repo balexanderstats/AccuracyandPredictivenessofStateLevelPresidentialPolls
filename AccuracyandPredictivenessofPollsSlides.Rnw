@@ -211,7 +211,7 @@ ggplot(dfavgaccuracybytime, aes(weeksleft, percentcallcomp, percentcallnoncomp))
 \item Below are estimated $R^2$ to predict the margin on election day given the polling margin for competitive and noncompetitive states. Purple Square is competitive states, and Black Rhomus is noncompetitive states.
 \end{itemize}
 <<>>=
-levels(statelevel$MidDaysFactor) = c("Pre-Primary", "Primary", "Summer", paste(12:2, "Weeks Before"), "Last week")
+#levels(statelevel$MidDaysFactor) = c("Pre-Primary", "Primary", "Summer", paste(12:2, "Weeks Before"), "Last week")
 rsquaretimebyyear = matrix(NA, ncol = 15, nrow =3)
 
 rsquaretime = colMeans(rsquaretimebyyear)
